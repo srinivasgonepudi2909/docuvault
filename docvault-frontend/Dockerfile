@@ -4,12 +4,16 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 
-# Install dependencies (prefer lockfile if present)
-COPY package.json package-lock.json* ./
-RUN npm ci
+# First copy only package files for better caching
+COPY package.json package-lock.json ./
 
-# Copy sources and build
+# Install dependencies - falls back to npm install if lockfile is invalid
+RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+# Copy the rest of the files
 COPY . .
+
+# Build the app
 RUN npm run build
 
 # ------------------------------------
