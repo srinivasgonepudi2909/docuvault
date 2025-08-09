@@ -17,17 +17,20 @@ RUN npm run build
 # ------------------------------------
 FROM nginx:1.27-alpine
 
-# Copy SPA nginx config (listens on 8080 and supports client-side routing)
+# Copy SPA config & build output
 COPY deploy/nginx.conf /etc/nginx/conf.d/default.conf
-
-# Copy built assets
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Expose non-root port
+# Prepare writable dirs for non-root Nginx
+# The nginx user exists in this image; give it ownership
+RUN mkdir -p /var/cache/nginx /var/run /var/log/nginx \
+ && chown -R nginx:nginx /var/cache/nginx /var/run /var/log/nginx /usr/share/nginx /etc/nginx/conf.d
+
 EXPOSE 8080
 
-# Optional: run as non-root (nginx user has uid 101 in this image)
-USER 101
+# Run as the 'nginx' user (uid ~101)
+USER nginx
 
 # Healthcheck (optional)
 HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://127.0.0.1:8080/ >/dev/null 2>&1 || exit 1
+
