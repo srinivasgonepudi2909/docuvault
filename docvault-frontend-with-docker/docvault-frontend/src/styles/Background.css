@@ -1,0 +1,40 @@
+:root {
+  --c1: #ffd6d6; /* soft pink */
+  --c2: #ffeabf; /* warm peach */
+  --c3: #d6f0ff; /* baby blue */
+  --c4: #fcdfff; /* light lavender */
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: #ffffff;
+  background-image:
+    radial-gradient(40% 35% at 20% 15%, var(--c1), transparent 60%),
+    radial-gradient(45% 40% at 80% 15%, var(--c2), transparent 60%),
+    radial-gradient(45% 45% at 20% 85%, var(--c3), transparent 60%),
+    radial-gradient(55% 50% at 80% 85%, var(--c4), transparent 60%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-blend-mode: screen;
+}
+
+.app-shell {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+  text-align: center;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+}
+.app-card {
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(0,0,0,0.06);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 32px 28px;
+}
