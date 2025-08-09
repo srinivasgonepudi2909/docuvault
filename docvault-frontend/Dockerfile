@@ -1,19 +1,19 @@
 # -----------------------------
-# Stage 1: Build the React app
+# Stage 1: Build the Vite/React app
 # -----------------------------
 FROM node:20-alpine AS build
 WORKDIR /app
 
-# First copy only package files for better caching
+# Copy package files first for better caching
 COPY package.json package-lock.json ./
 
-# Install dependencies - falls back to npm install if lockfile is invalid
+# Install dependencies (falls back to npm install if no lockfile)
 RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
 
-# Copy the rest of the files
+# Copy all other files
 COPY . .
 
-# Build the app
+# Build the app (using Vite)
 RUN npm run build
 
 # ------------------------------------
